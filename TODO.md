@@ -16,5 +16,4 @@ This CLI app will take an optional `JSON` configuration file specifying:
 
 ## Tasks
 
-- [ ] ok
-- [x] ko 
+
