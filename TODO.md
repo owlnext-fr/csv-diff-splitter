@@ -21,6 +21,39 @@ Some instructions:
 
 ## Rundown
 
+- Handle CLI command
+    - source file
+    - target file
+    - option JSON file for configuration
+    - handle verbosity
+        - logger
+        - stopwatch
+
+- CSV files
+    - Read CSV
+    - Write CSV
+
+- Handling confugration & options
+    - Load JSON file
+        - Deserializing data
+        - scheme:
+            - identifier
+            - update_markers
+            - print_markers
+    - Default configuration
+
+- Middlewares
+    - async/await | async tasks
+    - loop over CSV data
+        - detect new lines
+            - if target.identifier not in source -> new
+        - detect deleted lines
+            - if source.identifier not in target -> deleted
+        - detect updated lines
+            - filter update_markers on each line
+            - create array with identifier -> hash(values)
+            - if source[i].hash != target[i].hash -> updated !
+
 ## Tasks
 
 
