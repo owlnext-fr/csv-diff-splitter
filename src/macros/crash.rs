@@ -1,6 +1,8 @@
 #[macro_export]
 /// macro crash!()
 /// 
+/// This will print an error to the standard output, then system exit with the given error code.
+/// 
 /// Usage: `crash!(String, i32)`
 /// 
 /// Arguemnts:
