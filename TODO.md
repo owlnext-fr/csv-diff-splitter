@@ -16,6 +16,8 @@ Some instructions:
 - The CLI must be autonomous, no `.env` files or external configuration.
 - The CLI must handle verbosity levels.
 - The CLI must, if possible, use multithreads.
+- The CLI will be exported as a binary.
+- The CLI will be exported as a .DEB package.
 
 ## Rundown
 
