@@ -21,13 +21,14 @@ Some instructions:
 
 ## Rundown
 
-- Handle CLI command
+- Handle CLI command ✅
     - source file
     - target file
     - option JSON file for configuration
     - handle verbosity
         - logger
         - stopwatch
+    - args validation
 
 - CSV files
     - Read CSV
