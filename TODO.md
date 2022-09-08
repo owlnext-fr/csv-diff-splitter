@@ -34,7 +34,7 @@ Some instructions:
     - Read CSV
     - Write CSV
 
-- Handling confugration & options
+- Handling confugration & options ✅
     - Load JSON file
         - Deserializing data
         - scheme:
