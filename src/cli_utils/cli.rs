@@ -4,7 +4,10 @@ use clap::Parser;
 use clap_verbosity_flag::{Verbosity, ErrorLevel};
 
 #[derive(Parser)]
-#[clap(author, version, about, long_about = None)]
+#[clap(name = "csv-diff-splitter")]
+#[clap(author = "Adrien G. for Owlnext <contact@owlnext.fr>")]
+#[clap(version = "0.1.0")]
+#[clap(about = "Split CSV files using comparison algorithms.", long_about = None)]
 pub struct Cli {
     /// Source file to analyze.
     #[clap(value_parser)]

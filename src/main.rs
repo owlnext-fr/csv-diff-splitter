@@ -3,8 +3,7 @@ use cli_utils::cli::Cli;
 use config::config_options::ConfigOptions;
 use stopwatch::Stopwatch;
 use std::fs;
-
-use crate::cli_utils::error_codes;
+use cli_utils::validators;
 
 extern crate pretty_env_logger;
 #[macro_use] extern crate log;
@@ -15,52 +14,47 @@ pub mod config;
 
 #[tokio::main]
 async fn main() {
+    // start stopwatch to monitor time
     let stopwatch = Stopwatch::start_new();
 
+    // parsing cli args & options
     let cli: Cli = Cli::parse();
 
+    // initializing logger with verbosity given by options
     pretty_env_logger::formatted_timed_builder()
         .filter_level(cli.verbosity.log_level_filter())
         .init();
 
+    // handling source path
     let source_path = cli.source_file.as_path();
+    validators::validate_source_file(source_path);
 
-    if !source_path.exists() || !source_path.is_file() {
-        crash!(format!("Cannot find source file {}", source_path.as_os_str().to_string_lossy()), error_codes::ERROR_SOURCE_FILE_NOT_FOUND);
-    }
-
-    info!("Source file location validated !");
-
-
+    // handling target path
     let target_path = cli.target_file.as_path();
+    validators::validate_target_file(target_path);
 
-    if !target_path.exists() || !target_path.is_file() {
-        crash!(format!("Cannot find target file {}", target_path.as_os_str().to_string_lossy()), error_codes::ERROR_SOURCE_FILE_NOT_FOUND);
-    }
-
-    info!("Target file location validated !");
-
+    // handling configuration
     let config: ConfigOptions = match cli.config_file {
+        // case: a config file is passed with '--config-file'
         Some(pathbuff) => {
             let config_path = pathbuff.as_path();
 
-            if !config_path.exists() || !config_path.is_file() {
-                crash!(format!("Cannot find config file {}", config_path.as_os_str().to_string_lossy()), error_codes::ERROR_CONFIG_FILE_NOT_FOUND);
-            }
+            validators::validate_config_file(config_path);
 
             let temp_json_config = fs::read_to_string(config_path).unwrap();
-            let json_config = temp_json_config.as_str();
 
-            let config: ConfigOptions = serde_json::from_str(json_config).unwrap();
-
-            config
+            serde_json::from_str(temp_json_config.as_str()).unwrap()
         },
+        // case: no config file is passed with '--config-file'
         None => ConfigOptions::default(),
     };
 
-    info!("Configuration loaded: {:?}", config);
+    info!("Configuration loaded: !");
+    debug!("Identifier index: {}", config.id_index);
+    debug!("Update marker indexes: {:?}", config.update_markers);
+    debug!("Print marker indexes: {:?}", config.print_markers);
 
 
-
+    // setting time elapsed since main start
     info!("{}", format!("Elapsed: {}ms", stopwatch.elapsed_ms()));
 }
