@@ -65,17 +65,18 @@ Some instructions:
 - ✅ target file argument
 - ✅ JSON config file option
 - ✅ handle verbosity option
-- ⚠️ destination path opt
+- ✅ destination path opt
 - ✅ args validation
 
 ### Configuration options
 - ✅ create default configuration
 - ✅ deserialize data if needed
 - ⚠️ schema
-    - identifier
+    - ⚠️ identifier
     - update_markers
-    - print_markers
+    - vprint_markers
     - ⚠️ separator
+    - ⚠️ has_headers
 
 ### Middleware
 - load CSV data with configuration

@@ -2,7 +2,7 @@ use clap::Parser;
 use cli_utils::cli::Cli;
 use config::config_options::ConfigOptions;
 use stopwatch::Stopwatch;
-use std::fs;
+use std::{fs, path::{Path, PathBuf}, env};
 use cli_utils::validators;
 
 extern crate pretty_env_logger;
@@ -47,6 +47,17 @@ async fn main() {
         },
         // case: no config file is passed with '--config-file'
         None => ConfigOptions::default(),
+    };
+
+    let output_path: PathBuf = match cli.output_path.clone() {
+        Some(pathbuff) => {
+            validators::validate_output_path(pathbuff.as_path());
+            pathbuff
+        },
+        None => {
+            let current_path_buffer: PathBuf = env::current_dir().unwrap();
+            current_path_buffer
+        },
     };
 
     info!("Configuration loaded: !");

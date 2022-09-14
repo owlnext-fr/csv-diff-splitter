@@ -34,3 +34,15 @@ pub fn validate_config_file(config_file: &Path) {
 
     info!("Config file location validated !");
 }
+
+
+/// Handles output path validation.
+/// 
+/// It will check that the path exists, and the given path is a real directory.
+pub fn validate_output_path(output_path: &Path) {
+    if !output_path.exists() || !output_path.is_dir() {
+        crate::crash!(format!("Cannot find source file {}", output_path.as_os_str().to_string_lossy()), error_codes::ERROR_OUTPUT_PATH_NOT_FOUND);
+    }
+
+    info!("Output path location validated !");
+}

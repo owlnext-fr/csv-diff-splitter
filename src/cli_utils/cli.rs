@@ -18,6 +18,9 @@ pub struct Cli {
     /// adds a configuration file to process source and target files.
     #[clap(value_parser, short, long)]
     pub config_file: Option<PathBuf>,
+    /// path to generate the final CSVs.
+    #[clap(value_parser, short, long)]
+    pub output_path: Option<PathBuf>,
     /// Verbosity level
     #[clap(flatten)]
     pub verbosity: Verbosity<ErrorLevel>,

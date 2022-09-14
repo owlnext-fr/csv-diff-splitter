@@ -6,3 +6,6 @@ pub const ERROR_TARGET_FILE_NOT_FOUND: i32 = 2;
 
 /// Used if the config file is not a valid file.
 pub const ERROR_CONFIG_FILE_NOT_FOUND: i32 = 3;
+
+/// Used if the output directory is not a valid folder.
+pub const ERROR_OUTPUT_PATH_NOT_FOUND: i32 = 4;
