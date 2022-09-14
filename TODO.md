@@ -21,7 +21,7 @@ Some instructions:
 
 ## Rundown
 
-- Handle CLI command ✅
+- Handle CLI command
     - source file
     - target file
     - option JSON file for configuration
@@ -34,7 +34,7 @@ Some instructions:
     - Read CSV
     - Write CSV
 
-- Handling confugration & options ✅
+- Handling confugration & options
     - Load JSON file
         - Deserializing data
         - scheme:
@@ -58,3 +58,32 @@ Some instructions:
 ## Tasks
 
 
+### Pepare the CLI
+- ✅ logger
+- ✅ stopwatch
+- ✅ source file argument
+- ✅ target file argument
+- ✅ JSON config file option
+- ✅ handle verbosity option
+- ⚠️ destination path opt
+- ✅ args validation
+
+### Configuration options
+- ✅ create default configuration
+- ✅ deserialize data if needed
+- ⚠️ schema
+    - identifier
+    - update_markers
+    - print_markers
+    - ⚠️ separator
+
+### Middleware
+- load CSV data with configuration
+- sort|trim CSV data with configuration
+- load keys into vector
+- load discriminators hash into vector
+- process new lines
+- process deleted lines
+- process updated lines
+- make treatments async
+- generate outpout CSVs
