@@ -9,3 +9,6 @@ pub const ERROR_CONFIG_FILE_NOT_FOUND: i32 = 3;
 
 /// Used if the output directory is not a valid folder.
 pub const ERROR_OUTPUT_PATH_NOT_FOUND: i32 = 4;
+
+/// Used if a file is unreadable.
+pub const ERROR_FILE_UNREADABLE: i32 = 5;

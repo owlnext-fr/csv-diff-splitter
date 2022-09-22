@@ -71,18 +71,17 @@ Some instructions:
 ### Configuration options
 - ✅ create default configuration
 - ✅ deserialize data if needed
-- ⚠️ schema
-    - ⚠️ identifier
+- ✅ schema
+    - identifier
     - update_markers
     - vprint_markers
-    - ⚠️ separator
-    - ⚠️ has_headers
+    - separator
+    - has_headers
 
 ### Middleware
-- load CSV data with configuration
-- sort|trim CSV data with configuration
-- load keys into vector
-- load discriminators hash into vector
+- ✅load CSV data with configuration
+- ✅load keys into vector
+- ✅load discriminators hash into vector
 - process new lines
 - process deleted lines
 - process updated lines

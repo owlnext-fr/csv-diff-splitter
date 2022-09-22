@@ -2,7 +2,7 @@ use clap::Parser;
 use cli_utils::cli::Cli;
 use config::config_options::ConfigOptions;
 use stopwatch::Stopwatch;
-use std::{fs, path::{Path, PathBuf}, env};
+use std::{fs, path::PathBuf, env};
 use cli_utils::validators;
 
 extern crate pretty_env_logger;
@@ -11,6 +11,8 @@ extern crate pretty_env_logger;
 pub mod cli_utils;
 pub mod macros;
 pub mod config;
+pub mod csv_utils;
+pub mod middleware;
 
 #[tokio::main]
 async fn main() {
@@ -26,12 +28,12 @@ async fn main() {
         .init();
 
     // handling source path
-    let source_path = cli.source_file.as_path();
-    validators::validate_source_file(source_path);
+    let source_path = cli.source_file;
+    validators::validate_source_file(source_path.clone().as_path());
 
     // handling target path
-    let target_path = cli.target_file.as_path();
-    validators::validate_target_file(target_path);
+    let target_path = cli.target_file;
+    validators::validate_target_file(target_path.clone().as_path());
 
     // handling configuration
     let config: ConfigOptions = match cli.config_file {
@@ -49,6 +51,7 @@ async fn main() {
         None => ConfigOptions::default(),
     };
 
+    // generting or getting output path
     let output_path: PathBuf = match cli.output_path.clone() {
         Some(pathbuff) => {
             validators::validate_output_path(pathbuff.as_path());
@@ -60,11 +63,17 @@ async fn main() {
         },
     };
 
+    // debug info, use -vvv to get it.
     info!("Configuration loaded: !");
-    debug!("Identifier index: {}", config.id_index);
+    debug!("Identifier index: {:?}", config.id_index);
     debug!("Update marker indexes: {:?}", config.update_markers);
     debug!("Print marker indexes: {:?}", config.print_markers);
+    debug!("Separator: {:?}", config.separator);
+    debug!("has headers: {:?}", config.has_headers);
+    debug!("Output path: {:}", output_path.as_os_str().to_string_lossy());
 
+    // main program.
+    middleware::middleware::process(source_path, target_path, config, output_path);
 
     // setting time elapsed since main start
     info!("{}", format!("Elapsed: {}ms", stopwatch.elapsed_ms()));
