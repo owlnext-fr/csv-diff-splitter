@@ -1,17 +1,18 @@
 use clap::Parser;
 use cli_utils::cli::Cli;
-use config::config_options::ConfigOptions;
-use stopwatch::Stopwatch;
-use std::{fs, path::PathBuf, env};
 use cli_utils::validators;
+use config::config_options::ConfigOptions;
+use std::{env, fs, path::PathBuf};
+use stopwatch::Stopwatch;
 
 extern crate pretty_env_logger;
-#[macro_use] extern crate log;
+#[macro_use]
+extern crate log;
 
 pub mod cli_utils;
-pub mod macros;
 pub mod config;
 pub mod csv_utils;
+pub mod macros;
 pub mod middleware;
 
 #[tokio::main]
@@ -46,7 +47,7 @@ async fn main() {
             let temp_json_config = fs::read_to_string(config_path).unwrap();
 
             serde_json::from_str(temp_json_config.as_str()).unwrap()
-        },
+        }
         // case: no config file is passed with '--config-file'
         None => ConfigOptions::default(),
     };
@@ -56,11 +57,11 @@ async fn main() {
         Some(pathbuff) => {
             validators::validate_output_path(pathbuff.as_path());
             pathbuff
-        },
+        }
         None => {
             let current_path_buffer: PathBuf = env::current_dir().unwrap();
             current_path_buffer
-        },
+        }
     };
 
     // debug info, use -vvv to get it.
@@ -70,7 +71,10 @@ async fn main() {
     debug!("Print marker indexes: {:?}", config.print_markers);
     debug!("Separator: {:?}", config.separator);
     debug!("has headers: {:?}", config.has_headers);
-    debug!("Output path: {:}", output_path.as_os_str().to_string_lossy());
+    debug!(
+        "Output path: {:}",
+        output_path.as_os_str().to_string_lossy()
+    );
 
     // main program.
     middleware::middleware::process(source_path, target_path, config, output_path);

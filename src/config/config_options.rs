@@ -12,17 +12,17 @@ pub struct ConfigOptions {
     /// Separator between each columns.
     pub separator: String,
     /// Either the CSV has headers or not.
-    pub has_headers: bool
+    pub has_headers: bool,
 }
 
 impl Default for ConfigOptions {
     fn default() -> Self {
-        Self { 
-            id_index: Default::default(), 
-            update_markers: Default::default(), 
-            print_markers: Default::default(), 
-            separator: ",".to_owned(), 
-            has_headers: false 
+        Self {
+            id_index: vec![0],
+            update_markers: vec![],
+            print_markers: vec![],
+            separator: ",".to_owned(),
+            has_headers: false,
         }
     }
 }
