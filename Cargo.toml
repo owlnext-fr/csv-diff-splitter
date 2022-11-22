@@ -1,7 +1,15 @@
 [package]
 name = "csv-diff-splitter"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+authors = ["Owlnext <contact@owlnext.fr>"]
+description = "A tool that analyses and produce diff files for CSV files."
+documentation = "https://github.com/owlnext-fr/csv-diff-splitter"
+readme = "README.md"
+repository = "https://github.com/owlnext-fr/csv-diff-splitter"
+license-file = "LICENSE"
+keywords = ["rust", "csv", "split", "diff"]
+publish = false
 
 [dependencies]
 clap  = {version = "4.0.26",  features = [ "derive" ]}
