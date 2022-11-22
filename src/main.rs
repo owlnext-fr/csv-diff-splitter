@@ -30,39 +30,32 @@ async fn main() {
 
     // handling source path
     let source_path = cli.source_file;
-    validators::validate_source_file(source_path.clone().as_path());
+    validators::validate_source_file(source_path.as_path());
 
     // handling target path
     let target_path = cli.target_file;
-    validators::validate_target_file(target_path.clone().as_path());
+    validators::validate_target_file(target_path.as_path());
 
     // handling configuration
-    let config: ConfigOptions = match cli.config_file {
-        // case: a config file is passed with '--config-file'
-        Some(pathbuff) => {
-            let config_path = pathbuff.as_path();
+    let config: ConfigOptions;
 
-            validators::validate_config_file(config_path);
-
-            let temp_json_config = fs::read_to_string(config_path).unwrap();
-
-            serde_json::from_str(temp_json_config.as_str()).unwrap()
-        }
-        // case: no config file is passed with '--config-file'
-        None => ConfigOptions::default(),
-    };
+    // case: a config file is passed with '--config-file'
+    if let Some(config_file_path) = cli.config_file {
+        validators::validate_config_file(config_file_path.as_path());
+        let temp_json_config = fs::read_to_string(config_file_path).unwrap();
+        config = serde_json::from_str(temp_json_config.as_str()).unwrap();
+    } else {
+        config = ConfigOptions::default();
+    }
 
     // generting or getting output path
-    let output_path: PathBuf = match cli.output_path.clone() {
-        Some(pathbuff) => {
-            validators::validate_output_path(pathbuff.as_path());
-            pathbuff
-        }
-        None => {
-            let current_path_buffer: PathBuf = env::current_dir().unwrap();
-            current_path_buffer
-        }
-    };
+    let output_path: PathBuf;
+    if let Some(output_p) = cli.output_path {
+        validators::validate_output_path(output_p.as_path());
+        output_path = output_p
+    } else {
+        output_path = env::current_dir().unwrap();
+    }
 
     // debug info, use -vvv to get it.
     info!("Configuration loaded: !");

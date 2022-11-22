@@ -12,3 +12,6 @@ pub const ERROR_OUTPUT_PATH_NOT_FOUND: i32 = 4;
 
 /// Used if a file is unreadable.
 pub const ERROR_FILE_UNREADABLE: i32 = 5;
+
+/// Used if the id_index field of a configuration is empty
+pub const ERROR_CONFIG_ID_INDEX_INVALID: i32 = 6;

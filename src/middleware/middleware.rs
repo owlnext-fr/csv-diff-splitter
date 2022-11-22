@@ -32,22 +32,31 @@ pub fn process(
     debug!("Source lines: {}", source_content.len());
     debug!("Target lines: {}", target_content.len());
 
-    // load keys into vector
+    // map<id values hashed, update values hashed>
     let mut source_hashed_lines: HashMap<u64, u64> = HashMap::new();
     let mut target_hashed_lines: HashMap<u64, u64> = HashMap::new();
 
+    // map<id values hashed, CSV line representation pointer>
     let mut source_lines: HashMap<u64, &StringRecord> = HashMap::new();
     let mut target_lines: HashMap<u64, &StringRecord> = HashMap::new();
 
+    // vectors of algos results
     let mut new_lines: Vec<&StringRecord> = vec![];
     let mut deleted_lines: Vec<&StringRecord> = vec![];
     let mut updated_lines: Vec<&StringRecord> = vec![];
 
+    // treating source data
     for line in source_content.iter() {
         let mut hasher = DefaultHasher::new();
 
-        for idx in config.id_index.iter() {
-            line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+        if config.id_index.is_empty() {
+            for val in line.into_iter() {
+                val.hash(&mut hasher);
+            }
+        } else {
+            for idx in config.id_index.iter() {
+                line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+            }
         }
 
         let key = hasher.finish();
@@ -55,18 +64,31 @@ pub fn process(
 
         let mut hasher = DefaultHasher::new();
 
-        for idx in config.update_markers.iter() {
-            line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+        if config.update_markers.is_empty() {
+            for val in line.into_iter() {
+                val.hash(&mut hasher);
+            }
+        } else {
+            for idx in config.update_markers.iter() {
+                line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+            }
         }
 
         source_hashed_lines.insert(key, hasher.finish());
     }
 
+    // treating target data
     for line in target_content.iter() {
         let mut hasher = DefaultHasher::new();
 
-        for idx in config.id_index.iter() {
-            line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+        if config.id_index.is_empty() {
+            for val in line.into_iter() {
+                val.hash(&mut hasher);
+            }
+        } else {
+            for idx in config.id_index.iter() {
+                line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+            }
         }
 
         let key = hasher.finish();
@@ -74,8 +96,14 @@ pub fn process(
 
         let mut hasher = DefaultHasher::new();
 
-        for idx in config.update_markers.iter() {
-            line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+        if config.update_markers.is_empty() {
+            for val in line.into_iter() {
+                val.hash(&mut hasher);
+            }
+        } else {
+            for idx in config.update_markers.iter() {
+                line.get(*idx as usize).unwrap_or("").hash(&mut hasher);
+            }
         }
 
         target_hashed_lines.insert(key, hasher.finish());
@@ -158,6 +186,7 @@ pub fn process(
     );
 }
 
+/// write a CSV given a path, datas and a configuration.
 fn write_csv(path: &PathBuf, items: Vec<&StringRecord>, config: &ConfigOptions) {
     let mut wtr = csv::WriterBuilder::new()
         .delimiter(*config.separator.as_bytes().get(0).unwrap())
